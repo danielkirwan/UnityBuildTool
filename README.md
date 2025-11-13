@@ -27,9 +27,8 @@ Built in **C# / WPF**, designed for developers who want a faster, cleaner build 
 
 *(Add a screenshot of your WPF window here if available)*  
 Example:
-```markdown
 ![Unity Build Tool Screenshot](Images/tool.png)
-```
+
 ## Getting Started simple
 1) Download UnityBuild.zip
 2) Download BuildAutomation.cs
