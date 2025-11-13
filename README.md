@@ -30,8 +30,12 @@ Example:
 ```markdown
 ![Unity Build Tool Screenshot](Images/tool.png)
 ```
-## Getting Started
-
+## Getting Started simple
+1) Download UnityBuild.zip
+2) Download BuildAutomation.cs
+3) Drag BuildAutomation.cs into a folder called Editor. Assets/Editor
+4) Extract zip
+5) double click exe and away you go
 
 
 
