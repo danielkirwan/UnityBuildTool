@@ -25,16 +25,22 @@ Built in **C# / WPF**, designed for developers who want a faster, cleaner build 
 
 ## 🖥️ Preview
 
-*(Add a screenshot of your WPF window here if available)*  
+
 Example:
 ![Unity Build Tool Screenshot](Images/tool.png)
 
 ## Getting Started simple
 1) Download UnityBuild.zip
 2) Download BuildAutomation.cs
-3) Drag BuildAutomation.cs into a folder called Editor. Assets/Editor
+3) Drag BuildAutomation.cs into a folder called Editor -> Assets/Editor
 4) Extract zip
 5) double click exe and away you go
 
+##Getting started 
+1) Download whole project
+2) Open in IDE of choice and make whatever changes you desire
+3) Drag BuildAutomation.cs into a folder called Editor -> Assets/Editor
+4) Build app in code editor or publish exe
+5) Build game
 
 
