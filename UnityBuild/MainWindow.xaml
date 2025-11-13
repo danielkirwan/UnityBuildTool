@@ -1,0 +1,39 @@
+﻿<Window x:Class="UnityBuild.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Unity Build Tool" Height="350" Width="600">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Unity Version:" VerticalAlignment="Center" Width="120"/>
+            <ComboBox x:Name="UnityVersionCombo" Width="200"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Project Path:" VerticalAlignment="Center" Width="120"/>
+            <TextBox x:Name="ProjectPathBox" Width="300" Margin="0,0,10,0"/>
+            <Button Content="Browse..." Width="80" Click="BrowseProject_Click"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Build Output:" VerticalAlignment="Center" Width="120"/>
+            <TextBox x:Name="BuildOutputBox" Width="300" Margin="0,0,10,0"/>
+            <Button Content="Browse..." Width="80" Click="BrowseOutput_Click"/>
+        </StackPanel>
+
+        <Button Grid.Row="3" x:Name="BuildButton" Content="Build Game" Width="120" Height="35"
+                Click="Build_Click" HorizontalAlignment="Left"/>
+
+        <ProgressBar Grid.Row="3" x:Name="BuildProgressBar" Height="20" Width="300"
+                     HorizontalAlignment="Right" Visibility="Collapsed"
+                     IsIndeterminate="True" Margin="0,0,10,0"/>
+
+    </Grid>
+</Window>

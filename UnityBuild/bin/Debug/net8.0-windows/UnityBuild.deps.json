@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "UnityBuild/1.0.0": {
+        "runtime": {
+          "UnityBuild.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "UnityBuild/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
