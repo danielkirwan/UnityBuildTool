@@ -27,7 +27,7 @@ Built in **C# / WPF**, designed for developers who want a faster, cleaner build 
 
 
 Example:
-![Unity Build Tool Screenshot](Images/tool.png)
+![Unity Build Tool Screenshot](Images/tool1.png)
 
 ## Getting Started simple
 1) Download UnityBuild.zip
