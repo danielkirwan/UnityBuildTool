@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "27KkcnsmgJ0=",
+  "dgSpecHash": "j4+7PQyvW8Q=",
   "success": true,
-  "projectFilePath": "F:\\DangryGames\\BuildTool\\UnityBuild\\UnityBuild.csproj",
+  "projectFilePath": "F:\\Tools\\UnityBuildApp\\UnityBuildTool\\UnityBuild\\UnityBuild.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\danie\\.nuget\\packages\\microsoft.net.illink.tasks\\8.0.19\\microsoft.net.illink.tasks.8.0.19.nupkg.sha512"
   ],

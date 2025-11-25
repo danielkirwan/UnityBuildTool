@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using Forms = System.Windows.Forms; 
 using MessageBox = System.Windows.MessageBox; 
 
@@ -50,6 +51,9 @@ namespace UnityBuild
             string unityVersion = UnityVersionCombo.SelectedItem as string;
             string projectPath = ProjectPathBox.Text;
             string outputPath = BuildOutputBox.Text;
+            string buildName = BuildNameBox.Text;
+            string version = VersionBox.Text;
+            string buildType = (BuildTypeCombo.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "release";
 
             if (string.IsNullOrWhiteSpace(unityVersion) || string.IsNullOrWhiteSpace(projectPath))
             {
@@ -72,7 +76,7 @@ namespace UnityBuild
                 return;
             }
 
-            string arguments = $"-batchmode -quit -projectPath \"{projectPath}\" -executeMethod BuildAutomation.BuildPC -buildPath \"{outputPath}\"";
+            string arguments = $"-batchmode -quit -projectPath \"{projectPath}\" -executeMethod BuildAutomation.BuildPC -buildPath=\"{outputPath}\" -buildName=\"{buildName}\" -version=\"{version}\" -buildType=\"{buildType}\"";
 
             BuildButton.IsEnabled = false;
             BuildProgressBar.Visibility = Visibility.Visible;

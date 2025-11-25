@@ -1,22 +1,22 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "F:\\DangryGames\\BuildTool\\UnityBuild\\",
+  "WorkspaceRootPath": "F:\\Tools\\UnityBuildApp\\UnityBuildTool\\UnityBuild\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|f:\\dangrygames\\buildtool\\unitybuild\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|f:\\tools\\unitybuildapp\\unitybuildtool\\unitybuild\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|f:\\dangrygames\\buildtool\\unitybuild\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|solutionrelative:app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|f:\\dangrygames\\buildtool\\unitybuild\\unitybuild.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "AbsoluteMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|f:\\tools\\unitybuildapp\\unitybuildtool\\unitybuild\\unitybuild.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|solutionrelative:unitybuild.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|f:\\dangrygames\\buildtool\\unitybuild\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|f:\\tools\\unitybuildapp\\unitybuildtool\\unitybuild\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|solutionrelative:app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|f:\\tools\\unitybuildapp\\unitybuildtool\\unitybuild\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BF5D5AEC-5477-4171-944B-B56D3E0EFF1F}|UnityBuild.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,17 +26,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "F:\\DangryGames\\BuildTool\\UnityBuild\\MainWindow.xaml.cs",
+              "DocumentMoniker": "F:\\Tools\\UnityBuildApp\\UnityBuildTool\\UnityBuild\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
-              "ToolTip": "F:\\DangryGames\\BuildTool\\UnityBuild\\MainWindow.xaml.cs",
+              "ToolTip": "F:\\Tools\\UnityBuildApp\\UnityBuildTool\\UnityBuild\\MainWindow.xaml.cs",
               "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEIAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-06T15:58:01.135Z",
               "IsPinned": true,
@@ -44,11 +44,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "App.xaml.cs",
-              "DocumentMoniker": "F:\\DangryGames\\BuildTool\\UnityBuild\\App.xaml.cs",
+              "DocumentMoniker": "F:\\Tools\\UnityBuildApp\\UnityBuildTool\\UnityBuild\\App.xaml.cs",
               "RelativeDocumentMoniker": "App.xaml.cs",
-              "ToolTip": "F:\\DangryGames\\BuildTool\\UnityBuild\\App.xaml.cs",
+              "ToolTip": "F:\\Tools\\UnityBuildApp\\UnityBuildTool\\UnityBuild\\App.xaml.cs",
               "RelativeToolTip": "App.xaml.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -58,11 +58,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "UnityBuild.csproj",
-              "DocumentMoniker": "F:\\DangryGames\\BuildTool\\UnityBuild\\UnityBuild.csproj",
+              "DocumentMoniker": "F:\\Tools\\UnityBuildApp\\UnityBuildTool\\UnityBuild\\UnityBuild.csproj",
               "RelativeDocumentMoniker": "UnityBuild.csproj",
-              "ToolTip": "F:\\DangryGames\\BuildTool\\UnityBuild\\UnityBuild.csproj",
+              "ToolTip": "F:\\Tools\\UnityBuildApp\\UnityBuildTool\\UnityBuild\\UnityBuild.csproj",
               "RelativeToolTip": "UnityBuild.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
@@ -72,11 +72,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "MainWindow.xaml",
-              "DocumentMoniker": "F:\\DangryGames\\BuildTool\\UnityBuild\\MainWindow.xaml",
+              "DocumentMoniker": "F:\\Tools\\UnityBuildApp\\UnityBuildTool\\UnityBuild\\MainWindow.xaml",
               "RelativeDocumentMoniker": "MainWindow.xaml",
-              "ToolTip": "F:\\DangryGames\\BuildTool\\UnityBuild\\MainWindow.xaml",
+              "ToolTip": "F:\\Tools\\UnityBuildApp\\UnityBuildTool\\UnityBuild\\MainWindow.xaml",
               "RelativeToolTip": "MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-11-06T15:58:02.633Z",

@@ -1,0 +1,2 @@
+F:\Tools\UnityBuildApp\UnityBuildTool\UnityBuild\bin\Release\net8.0-windows\publish\unitybuild\UnityBuild.pdb
+F:\Tools\UnityBuildApp\UnityBuildTool\UnityBuild\bin\Release\net8.0-windows\publish\unitybuild\UnityBuild.exe

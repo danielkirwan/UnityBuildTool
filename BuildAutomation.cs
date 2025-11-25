@@ -10,85 +10,111 @@ public static class BuildAutomation
     [MenuItem("Build/Test Batch")]
     public static void BuildPC()
     {
+        Debug.Log("[BuildAutomation] Method invoked! Project path: " + Application.dataPath);
+
+        string[] args = Environment.GetCommandLineArgs();
+
+        string buildPath = "Builds/WindowsBuild";
+        string buildName = "MyGame";
+        string version = "1.0.0";
+        string buildType = "release";
+
+        // Parse arguments using stable "-key=value" pattern
+        foreach (var arg in args)
+        {
+            if (arg.StartsWith("-buildPath="))
+                buildPath = arg.Substring("-buildPath=".Length);
+
+            if (arg.StartsWith("-buildName="))
+                buildName = arg.Substring("-buildName=".Length);
+
+            if (arg.StartsWith("-version="))
+                version = arg.Substring("-version=".Length);
+
+            if (arg.StartsWith("-buildType="))
+                buildType = arg.Substring("-buildType=".Length);
+        }
+
+        Debug.Log($"[BuildAutomation] Build Path: {buildPath}");
+        Debug.Log($"[BuildAutomation] Build Name: {buildName}");
+        Debug.Log($"[BuildAutomation] Version: {version}");
+        Debug.Log($"[BuildAutomation] Build Type: {buildType}");
+
         try
         {
-            Debug.Log("[BuildAutomation] Method invoked! Project path: " + Application.dataPath);
+            PlayerSettings.bundleVersion = version;
+            Debug.Log($"[BuildAutomation] Applied PlayerSettings.bundleVersion = {version}");
 
-            string[] args = Environment.GetCommandLineArgs();
+            string versionedPath = Path.Combine(buildPath, $"v{version}");
+            Directory.CreateDirectory(versionedPath);
 
-            string buildPath = "Builds/WindowsBuild";
-            string buildName = "MyGame";
-            string version = "1.0.0";
+            string fullExePath = Path.Combine(versionedPath, $"{buildName}_v{version}.exe");
 
-            for (int i = 0; i < args.Length; i++)
-            {
-                if (args[i] == "-buildPath" && i + 1 < args.Length) buildPath = args[i + 1];
-                if (args[i] == "-buildName" && i + 1 < args.Length) buildName = args[i + 1];
-                if (args[i] == "-version" && i + 1 < args.Length) version = args[i + 1];
-            }
+            File.WriteAllText(Path.Combine(versionedPath, "version.json"),
+                $"{{\n  \"version\": \"{version}\",\n  \"buildName\": \"{buildName}\",\n  \"buildType\": \"{buildType}\",\n  \"date\": \"{DateTime.Now}\" \n}}"
+            );
 
-            for (int i = 0; i < args.Length; i++)
-            {
-                if (args[i] == "-buildPath" && i + 1 < args.Length) buildPath = args[i + 1];
-                if (args[i] == "-buildName" && i + 1 < args.Length) buildName = args[i + 1];
-                if (args[i] == "-version" && i + 1 < args.Length) version = args[i + 1];
-            }
-
-            Directory.CreateDirectory(buildPath);
-
-            string fullPath = Path.Combine(buildPath, $"{buildName}.exe");
-
-            Debug.Log("[BuildAutomation] Starting build...");
-            Debug.Log("[BuildAutomation] Output: " + fullPath);
-            Debug.Log("[BuildAutomation] Version: " + version);
-
-            string[] scenes = Array.FindAll(EditorBuildSettings.scenes, s => s.enabled).Select(s => s.path).ToArray();
-
-            Debug.Log("[BuildAutomation] Enabled scenes count: " + scenes.Length);
-            Debug.Log("[BuildAutomation] Scenes: " + string.Join(", ", scenes));  
+            // Get enabled scenes
+            string[] scenes = EditorBuildSettings.scenes
+                .Where(s => s.enabled)
+                .Select(s => s.path)
+                .ToArray();
 
             if (scenes.Length == 0)
             {
-                Debug.LogError("[BuildAutomation] No scenes enabled�cannot build! Add them in File > Build Settings.");
-                return;  
+                Debug.LogError("[BuildAutomation] No scenes enabled in Build Settings!");
+                if (args.Any(a => a == "-batchmode"))
+                    EditorApplication.Exit(1);
+                return;
             }
 
-            Debug.Log("[BuildAutomation] Starting build to: " + fullPath);
+            // Development / Release flags
+            BuildOptions options = BuildOptions.None;
+
+            if (buildType.Equals("development", StringComparison.OrdinalIgnoreCase))
+            {
+                options = BuildOptions.Development |
+                          BuildOptions.AllowDebugging |
+                          BuildOptions.ConnectWithProfiler;
+
+                Debug.Log("[BuildAutomation] Development flags enabled.");
+            }
+
+            Debug.Log("[BuildAutomation] Starting build...");
+            Debug.Log("[BuildAutomation] Output File: " + fullExePath);
+
             BuildReport report = BuildPipeline.BuildPlayer(
                 scenes,
-                fullPath,
+                fullExePath,
                 BuildTarget.StandaloneWindows64,
-                BuildOptions.None
+                options
             );
 
-            Debug.Log("[BuildAutomation] Build result: " + report.summary.result);
-            Debug.Log("[BuildAutomation] Total time: " + report.summary.totalTime);
+            Debug.Log($"[BuildAutomation] Build Result: {report.summary.result}");
+            Debug.Log($"[BuildAutomation] Total Build Time: {report.summary.totalTime}");
 
             if (report.summary.result != BuildResult.Succeeded)
             {
-                Debug.LogError("[BuildAutomation] Build failed! Result: " + report.summary.result);
+                Debug.LogError("[BuildAutomation] Build FAILED!");
                 if (args.Any(a => a == "-batchmode"))
-                {
                     EditorApplication.Exit(1);
-                }
             }
             else
             {
-                Debug.Log("[BuildAutomation] Build succeeded! Check: " + fullPath);
+                Debug.Log("[BuildAutomation] Build completed successfully.");
+                Debug.Log("[BuildAutomation] File location: " + fullExePath);
+
                 if (args.Any(a => a == "-batchmode"))
-                {
                     EditorApplication.Exit(0);
-                }
             }
         }
-        catch (System.Exception e)
+        catch (Exception ex)
         {
-            Debug.LogError("[BuildAutomation] Exception during build: " + e.Message + "\nStack trace: " + e.StackTrace);
-            if (Environment.GetCommandLineArgs().Any(a => a == "-batchmode"))
-            {
+            Debug.LogError("[BuildAutomation] ERROR: " + ex.Message);
+            Debug.LogError(ex.StackTrace);
+
+            if (args.Any(a => a == "-batchmode"))
                 EditorApplication.Exit(1);
-            }
         }
     }
 }
-
