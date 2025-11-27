@@ -1,13 +1,14 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Forms = System.Windows.Forms; 
-using MessageBox = System.Windows.MessageBox; 
+using Forms = System.Windows.Forms;
+using MessageBox = System.Windows.MessageBox;
 
 namespace UnityBuild
 {
@@ -76,7 +77,14 @@ namespace UnityBuild
                 return;
             }
 
-            string arguments = $"-batchmode -quit -projectPath \"{projectPath}\" -executeMethod BuildAutomation.BuildPC -buildPath=\"{outputPath}\" -buildName=\"{buildName}\" -version=\"{version}\" -buildType=\"{buildType}\"";
+            string arguments =
+                $"-batchmode -quit " +
+                $"-projectPath \"{projectPath}\" " +
+                $"-executeMethod BuildAutomation.BuildPC " +
+                $"-buildPath=\"{outputPath}\" " +
+                $"-buildName=\"{buildName}\" " +
+                $"-version=\"{version}\" " +
+                $"-buildType=\"{buildType}\"";
 
             BuildButton.IsEnabled = false;
             BuildProgressBar.Visibility = Visibility.Visible;
@@ -124,6 +132,355 @@ namespace UnityBuild
             BuildProgressBar.Visibility = Visibility.Collapsed;
 
             MessageBox.Show($"✅ Build completed!\nOutput folder:\n{outputPath}");
+        }
+
+        private void BrowseIconSource_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.Filter = "Image Files|*.png;*.jpg;*.jpeg";
+            if (dlg.ShowDialog() == true)
+                IconSourcePath.Text = dlg.FileName;
+        }
+
+        private void BrowseIconOutput_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Forms.FolderBrowserDialog();
+            if (dlg.ShowDialog() == Forms.DialogResult.OK)
+                IconOutputPath.Text = dlg.SelectedPath;
+        }
+
+        /// <summary>
+        /// GENERATE ICONS BUTTON:
+        /// - Generates Unity icons in:
+        ///   Assets/Editor/GeneratedIcons/Standalone
+        ///   Assets/Editor/GeneratedIcons/Android
+        ///   Assets/Editor/GeneratedIcons/iOS
+        /// - Optionally generates ICO/ICNS/Android mipmaps into IconOutputPath.
+        /// </summary>
+        private void GenerateIcons_Click(object sender, RoutedEventArgs e)
+        {
+            string src = IconSourcePath.Text;
+            string projectPath = ProjectPathBox.Text;
+            string extraOutput = IconOutputPath.Text;
+
+            if (!File.Exists(src))
+            {
+                MessageBox.Show("Please select a valid source image.");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(projectPath) || !Directory.Exists(projectPath))
+            {
+                MessageBox.Show("Please select a valid Unity project path (Project Path).");
+                return;
+            }
+
+            // Generate full Unity icon set inside the project
+            string generatedRoot = GenerateUnityIconSet(src, projectPath);
+
+            // Optionally also generate external ICO/ICNS/Android mipmaps into the chosen output folder
+            if (!string.IsNullOrWhiteSpace(extraOutput))
+            {
+                try
+                {
+                    Directory.CreateDirectory(extraOutput);
+
+                    string standaloneDir = Path.Combine(generatedRoot, "Standalone");
+                    string icon1024 = Path.Combine(standaloneDir, "icon_1024.png");
+                    string baseForExternal = File.Exists(icon1024) ? icon1024 : src;
+
+                    if (GenWindows.IsChecked == true)
+                        GenerateWindowsICO(baseForExternal, Path.Combine(extraOutput, "app_icon.ico"));
+
+                    if (GenMac.IsChecked == true)
+                        GenerateMacICNS(baseForExternal, Path.Combine(extraOutput, "app_icon.icns"));
+
+                    if (GenAndroid.IsChecked == true)
+                        GenerateAndroidMipmaps(baseForExternal, extraOutput);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error generating external icons:\n" + ex.Message);
+                    return;
+                }
+            }
+
+            MessageBox.Show("✔ Unity icon set generated successfully!\n" +
+                            "Assets/Editor/GeneratedIcons has been updated.");
+        }
+
+        /// <summary>
+        /// Generate full Unity icon set in Assets/Editor/GeneratedIcons
+        /// Standalone, Android, iOS.
+        /// </summary>
+        private string GenerateUnityIconSet(string sourceImagePath, string projectPath)
+        {
+            string baseDir = Path.Combine(projectPath, "Assets/Editor/GeneratedIcons");
+            string standaloneDir = Path.Combine(baseDir, "Standalone");
+            string androidDir = Path.Combine(baseDir, "Android");
+            string iosDir = Path.Combine(baseDir, "iOS");
+
+            Directory.CreateDirectory(standaloneDir);
+            Directory.CreateDirectory(androidDir);
+            Directory.CreateDirectory(iosDir);
+
+            using (var fs = new FileStream(sourceImagePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (var original = System.Drawing.Image.FromStream(fs))
+            {
+                // Standalone sizes
+                int[] standaloneSizes = { 16, 32, 48, 64, 128, 256, 512, 1024 };
+                foreach (int size in standaloneSizes)
+                {
+                    string outPath = Path.Combine(standaloneDir, $"icon_{size}.png");
+                    SaveResizedImage(original, outPath, size);
+                }
+
+                // Android legacy (mdpi, hdpi, xhdpi, xxhdpi, xxxhdpi)
+                var androidSizes = new Dictionary<string, int>
+                {
+                    { "android_48", 48 },     // mdpi
+                    { "android_72", 72 },     // hdpi
+                    { "android_96", 96 },     // xhdpi
+                    { "android_144", 144 },   // xxhdpi
+                    { "android_192", 192 }    // xxxhdpi
+                };
+                foreach (var kv in androidSizes)
+                {
+                    string outPath = Path.Combine(androidDir, kv.Key + ".png");
+                    SaveResizedImage(original, outPath, kv.Value);
+                }
+
+                // iOS icons
+                var iosSizes = new Dictionary<string, int>
+                {
+                    { "ios_60", 60 },      // iPhone 60pt @1x
+                    { "ios_120", 120 },    // iPhone 60pt @2x
+                    { "ios_180", 180 },    // iPhone 60pt @3x
+                    { "ios_76", 76 },      // iPad 76pt @1x
+                    { "ios_152", 152 },    // iPad 76pt @2x
+                    { "ios_167", 167 },    // iPad Pro 83.5pt @2x
+                    { "ios_1024", 1024 }   // App Store icon
+                };
+                foreach (var kv in iosSizes)
+                {
+                    string outPath = Path.Combine(iosDir, kv.Key + ".png");
+                    SaveResizedImage(original, outPath, kv.Value);
+                }
+            }
+
+            return baseDir;
+        }
+
+        /// <summary>
+        /// Helper for resizing + centring image into a square canvas.
+        /// </summary>
+        private void SaveResizedImage(System.Drawing.Image original, string outputPath, int size)
+        {
+            using (var square = new System.Drawing.Bitmap(size, size))
+            using (var g = System.Drawing.Graphics.FromImage(square))
+            {
+                g.Clear(System.Drawing.Color.Transparent);
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+                float ratio = Math.Min((float)size / original.Width, (float)size / original.Height);
+                int newWidth = (int)(original.Width * ratio);
+                int newHeight = (int)(original.Height * ratio);
+
+                int x = (size - newWidth) / 2;
+                int y = (size - newHeight) / 2;
+
+                g.DrawImage(original, x, y, newWidth, newHeight);
+                Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
+                square.Save(outputPath, System.Drawing.Imaging.ImageFormat.Png);
+            }
+        }
+
+        private void GenerateWindowsICO(string src, string output)
+        {
+            using (var img = System.Drawing.Image.FromFile(src))
+            {
+                var iconSizes = new[] { 16, 32, 48, 64, 128, 256 };
+                using (var fs = new FileStream(output, FileMode.Create))
+                using (var bw = new BinaryWriter(fs))
+                {
+                    bw.Write((short)0);
+                    bw.Write((short)1);
+                    bw.Write((short)iconSizes.Length);
+
+                    long imageDataOffset = 6 + (16 * iconSizes.Length);
+
+                    foreach (var size in iconSizes)
+                    {
+                        using (var bmp = new System.Drawing.Bitmap(img, new System.Drawing.Size(size, size)))
+                        using (var ms = new MemoryStream())
+                        {
+                            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                            byte[] png = ms.ToArray();
+
+                            bw.Write((byte)size);
+                            bw.Write((byte)size);
+                            bw.Write((byte)0);
+                            bw.Write((byte)0);
+                            bw.Write((short)1);
+                            bw.Write((short)32);
+                            bw.Write(png.Length);
+                            bw.Write((int)imageDataOffset);
+
+                            imageDataOffset += png.Length;
+                        }
+                    }
+
+                    foreach (var size in iconSizes)
+                    {
+                        using (var bmp = new System.Drawing.Bitmap(img, new System.Drawing.Size(size, size)))
+                        using (var ms = new MemoryStream())
+                        {
+                            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                            byte[] png = ms.ToArray();
+                            bw.Write(png);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void GenerateMacICNS(string src, string output)
+        {
+            var sizes = new[] { 16, 32, 64, 128, 256, 512, 1024 };
+            using (var fs = new FileStream(output, FileMode.Create))
+            using (var bw = new BinaryWriter(fs))
+            {
+                bw.Write(System.Text.Encoding.ASCII.GetBytes("icns"));
+                bw.Write(0); // will fill later
+                long totalSize = 8;
+
+                foreach (var s in sizes)
+                {
+                    using (var img = new System.Drawing.Bitmap(src))
+                    using (var resized = new System.Drawing.Bitmap(img, new System.Drawing.Size(s, s)))
+                    using (var ms = new MemoryStream())
+                    {
+                        resized.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                        byte[] png = ms.ToArray();
+                        string type = $"ic0{(int)Math.Log(s, 2)}";
+
+                        bw.Write(System.Text.Encoding.ASCII.GetBytes(type));
+                        bw.Write(png.Length + 8);
+                        bw.Write(png);
+
+                        totalSize += png.Length + 8;
+                    }
+                }
+
+                fs.Position = 4;
+                bw.Write((uint)totalSize);
+            }
+        }
+
+        private void GenerateAndroidMipmaps(string src, string output)
+        {
+            var sizes = new Dictionary<string, int>
+            {
+                { "mipmap-mdpi", 48 },
+                { "mipmap-hdpi", 72 },
+                { "mipmap-xhdpi", 96 },
+                { "mipmap-xxhdpi", 144 },
+                { "mipmap-xxxhdpi", 192 }
+            };
+
+            foreach (var kv in sizes)
+            {
+                string folder = Path.Combine(output, kv.Key);
+                Directory.CreateDirectory(folder);
+
+                using (var img = new System.Drawing.Bitmap(src))
+                using (var resized = new System.Drawing.Bitmap(img, new System.Drawing.Size(kv.Value, kv.Value)))
+                {
+                    resized.Save(Path.Combine(folder, "app_icon.png"), System.Drawing.Imaging.ImageFormat.Png);
+                }
+            }
+        }
+
+        /// <summary>
+        /// APPLY ICONS BUTTON:
+        /// - Assumes GenerateIcons has already created icons in Assets/Editor/GeneratedIcons.
+        /// - Calls Unity in batchmode with -iconsRootPath="<full path to GeneratedIcons>".
+        /// </summary>
+        private async void ApplyIconsToUnity_Click(object sender, RoutedEventArgs e)
+        {
+            string unityVersion = UnityVersionCombo.SelectedItem as string;
+            string projectPath = ProjectPathBox.Text;
+
+            if (string.IsNullOrWhiteSpace(unityVersion))
+            {
+                MessageBox.Show("Please select a Unity version.");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(projectPath) || !Directory.Exists(projectPath))
+            {
+                MessageBox.Show("Please select a valid Unity project path.");
+                return;
+            }
+
+            string iconsRoot = Path.Combine(projectPath, "Assets/Editor/GeneratedIcons");
+            if (!Directory.Exists(iconsRoot))
+            {
+                MessageBox.Show("No generated icons found.\nPlease click 'Generate Icons' first.");
+                return;
+            }
+
+            string unityExe = $@"C:\Program Files\Unity\Hub\Editor\{unityVersion}\Editor\Unity.exe";
+
+            if (!File.Exists(unityExe))
+            {
+                MessageBox.Show($"Unity executable not found:\n{unityExe}");
+                return;
+            }
+
+            // Pass the root folder of all generated icons
+            string arguments =
+                $"-batchmode -quit " +
+                $"-projectPath \"{projectPath}\" " +
+                $"-executeMethod IconAutomation.ApplyIcons " +
+                $"-iconsRootPath=\"{iconsRoot}\"";
+
+            MessageBox.Show("Running Unity to apply icons...");
+
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = unityExe,
+                    Arguments = arguments,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                }
+            };
+
+            process.OutputDataReceived += (s, ev) =>
+            {
+                if (!string.IsNullOrEmpty(ev.Data))
+                    Console.WriteLine("UNITY: " + ev.Data);
+            };
+
+            process.ErrorDataReceived += (s, ev) =>
+            {
+                if (!string.IsNullOrEmpty(ev.Data))
+                    Console.WriteLine("UNITY ERROR: " + ev.Data);
+            };
+
+            await Task.Run(() =>
+            {
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                process.WaitForExit();
+            });
+
+            MessageBox.Show("✔ Finished applying icons!\nCheck Editor.log.");
         }
     }
 }
