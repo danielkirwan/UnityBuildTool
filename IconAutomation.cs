@@ -13,9 +13,6 @@ public static class IconAutomation
         string[] args = System.Environment.GetCommandLineArgs();
         string iconFolder = null;
 
-        // ----------------------------------------------------------
-        // Accept BOTH argument formats:
-        // ----------------------------------------------------------
         for (int i = 0; i < args.Length; i++)
         {
             string a = args[i];
@@ -42,9 +39,6 @@ public static class IconAutomation
             return;
         }
 
-        // ----------------------------------------------------------
-        // Convert ABSOLUTE → PROJECT RELATIVE
-        // ----------------------------------------------------------
         string projectRoot = Application.dataPath.Replace("/Assets", "");
         iconFolder = iconFolder.Replace("\\", "/");
 
@@ -53,9 +47,6 @@ public static class IconAutomation
 
         AssetDatabase.ImportAsset(relativeRoot, ImportAssetOptions.ForceUpdate);
 
-        // ----------------------------------------------------------
-        // Platform subfolders
-        // ----------------------------------------------------------
         string standaloneFolder = Path.Combine(relativeRoot, "Standalone").Replace("\\", "/");
         string androidFolder = Path.Combine(relativeRoot, "Android").Replace("\\", "/");
         string iosFolder = Path.Combine(relativeRoot, "iOS").Replace("\\", "/");
@@ -69,16 +60,10 @@ public static class IconAutomation
         Debug.Log($"  Android: {android.Length}");
         Debug.Log($"  iOS: {ios.Length}");
 
-        // ----------------------------------------------------------
-        // NEW: reorder icons to match Unity’s required sizes
-        // ----------------------------------------------------------
         standalone = OrderIconsForTargetGroup(BuildTargetGroup.Standalone, standalone);
         android = OrderIconsForTargetGroup(BuildTargetGroup.Android, android);
         ios = OrderIconsForTargetGroup(BuildTargetGroup.iOS, ios);
 
-        // ----------------------------------------------------------
-        // Apply icons
-        // ----------------------------------------------------------
         try
         {
             if (standalone.Length > 0)
@@ -108,9 +93,6 @@ public static class IconAutomation
         EditorApplication.Exit(0);
     }
 
-    // ----------------------------------------------------------
-    // Load PNGs and sort by size
-    // ----------------------------------------------------------
     private static Texture2D[] LoadIconsFromFolder(string relativeFolder)
     {
         if (!AssetDatabase.IsValidFolder(relativeFolder))
@@ -135,13 +117,9 @@ public static class IconAutomation
                 list.Add((tex, Mathf.Max(tex.width, tex.height)));
         }
 
-        // Sort by pixel size ASCENDING
         return list.OrderBy(x => x.size).Select(x => x.tex).ToArray();
     }
 
-    // ----------------------------------------------------------
-    // NEW: Reorder icon list to match Unity's expected icon sizes
-    // ----------------------------------------------------------
     private static Texture2D[] OrderIconsForTargetGroup(BuildTargetGroup group, Texture2D[] textures)
     {
         int[] required = PlayerSettings.GetIconSizesForTargetGroup(group);
@@ -154,7 +132,6 @@ public static class IconAutomation
         {
             int size = Mathf.Max(tex.width, tex.height);
 
-            // Find matching index
             int idx = System.Array.IndexOf(required, size);
 
             if (idx >= 0)

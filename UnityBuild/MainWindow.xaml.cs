@@ -155,7 +155,6 @@ namespace UnityBuild
         ///   Assets/Editor/GeneratedIcons/Standalone
         ///   Assets/Editor/GeneratedIcons/Android
         ///   Assets/Editor/GeneratedIcons/iOS
-        /// - Optionally generates ICO/ICNS/Android mipmaps into IconOutputPath.
         /// </summary>
         private void GenerateIcons_Click(object sender, RoutedEventArgs e)
         {
@@ -175,10 +174,8 @@ namespace UnityBuild
                 return;
             }
 
-            // Generate full Unity icon set inside the project
             string generatedRoot = GenerateUnityIconSet(src, projectPath);
 
-            // Optionally also generate external ICO/ICNS/Android mipmaps into the chosen output folder
             if (!string.IsNullOrWhiteSpace(extraOutput))
             {
                 try
@@ -205,14 +202,10 @@ namespace UnityBuild
                 }
             }
 
-            MessageBox.Show("✔ Unity icon set generated successfully!\n" +
+            MessageBox.Show("Unity icon set generated successfully!\n" +
                             "Assets/Editor/GeneratedIcons has been updated.");
         }
 
-        /// <summary>
-        /// Generate full Unity icon set in Assets/Editor/GeneratedIcons
-        /// Standalone, Android, iOS.
-        /// </summary>
         private string GenerateUnityIconSet(string sourceImagePath, string projectPath)
         {
             string baseDir = Path.Combine(projectPath, "Assets/Editor/GeneratedIcons");
@@ -227,7 +220,6 @@ namespace UnityBuild
             using (var fs = new FileStream(sourceImagePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (var original = System.Drawing.Image.FromStream(fs))
             {
-                // Standalone sizes
                 int[] standaloneSizes = { 16, 32, 48, 64, 128, 256, 512, 1024 };
                 foreach (int size in standaloneSizes)
                 {
@@ -235,14 +227,13 @@ namespace UnityBuild
                     SaveResizedImage(original, outPath, size);
                 }
 
-                // Android legacy (mdpi, hdpi, xhdpi, xxhdpi, xxxhdpi)
                 var androidSizes = new Dictionary<string, int>
                 {
-                    { "android_48", 48 },     // mdpi
-                    { "android_72", 72 },     // hdpi
-                    { "android_96", 96 },     // xhdpi
-                    { "android_144", 144 },   // xxhdpi
-                    { "android_192", 192 }    // xxxhdpi
+                    { "android_48", 48 },     
+                    { "android_72", 72 },     
+                    { "android_96", 96 },     
+                    { "android_144", 144 },   
+                    { "android_192", 192 }    
                 };
                 foreach (var kv in androidSizes)
                 {
@@ -250,16 +241,15 @@ namespace UnityBuild
                     SaveResizedImage(original, outPath, kv.Value);
                 }
 
-                // iOS icons
                 var iosSizes = new Dictionary<string, int>
                 {
-                    { "ios_60", 60 },      // iPhone 60pt @1x
-                    { "ios_120", 120 },    // iPhone 60pt @2x
-                    { "ios_180", 180 },    // iPhone 60pt @3x
-                    { "ios_76", 76 },      // iPad 76pt @1x
-                    { "ios_152", 152 },    // iPad 76pt @2x
-                    { "ios_167", 167 },    // iPad Pro 83.5pt @2x
-                    { "ios_1024", 1024 }   // App Store icon
+                    { "ios_60", 60 },      
+                    { "ios_120", 120 },    
+                    { "ios_180", 180 },    
+                    { "ios_76", 76 },      
+                    { "ios_152", 152 },    
+                    { "ios_167", 167 },    
+                    { "ios_1024", 1024 }   
                 };
                 foreach (var kv in iosSizes)
                 {
@@ -270,10 +260,6 @@ namespace UnityBuild
 
             return baseDir;
         }
-
-        /// <summary>
-        /// Helper for resizing + centring image into a square canvas.
-        /// </summary>
         private void SaveResizedImage(System.Drawing.Image original, string outputPath, int size)
         {
             using (var square = new System.Drawing.Bitmap(size, size))
@@ -351,7 +337,7 @@ namespace UnityBuild
             using (var bw = new BinaryWriter(fs))
             {
                 bw.Write(System.Text.Encoding.ASCII.GetBytes("icns"));
-                bw.Write(0); // will fill later
+                bw.Write(0); 
                 long totalSize = 8;
 
                 foreach (var s in sizes)
@@ -401,11 +387,6 @@ namespace UnityBuild
             }
         }
 
-        /// <summary>
-        /// APPLY ICONS BUTTON:
-        /// - Assumes GenerateIcons has already created icons in Assets/Editor/GeneratedIcons.
-        /// - Calls Unity in batchmode with -iconsRootPath="<full path to GeneratedIcons>".
-        /// </summary>
         private async void ApplyIconsToUnity_Click(object sender, RoutedEventArgs e)
         {
             string unityVersion = UnityVersionCombo.SelectedItem as string;
@@ -438,7 +419,6 @@ namespace UnityBuild
                 return;
             }
 
-            // Pass the root folder of all generated icons
             string arguments =
                 $"-batchmode -quit " +
                 $"-projectPath \"{projectPath}\" " +
@@ -480,7 +460,7 @@ namespace UnityBuild
                 process.WaitForExit();
             });
 
-            MessageBox.Show("✔ Finished applying icons!\nCheck Editor.log.");
+            MessageBox.Show("Finished applying icons!\nCheck Editor.log.");
         }
     }
 }
