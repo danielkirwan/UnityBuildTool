@@ -43,4 +43,20 @@ Example:
 4) Build app in code editor or publish exe
 5) Build game
 
+## New feature: Generate unity icons, add to project and apply to player settings
+1) Download UnityBuild.zip
+2) Download IconAutomation.cs
+3) Drag IconAutomation.cs into a folder called Editor -> Assets/Editor
+4) Extract zip
+5) double click exe and away you go
+6) Generate Icons
+7) Apply icons
+
+##Getting started 
+1) Download whole project
+2) Open in IDE of choice and make whatever changes you desire
+3) Drag IconAutomation.cs into a folder called Editor -> Assets/Editor
+4) Generate Icons
+5) Apply Icons
+
 
