@@ -19,13 +19,13 @@
             <Setter Property="Height" Value="30"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
+
         <Style TargetType="CheckBox">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0,0,10,0"/>
         </Style>
-
 
         <Style TargetType="ComboBox">
             <Setter Property="Foreground" Value="White"/>
@@ -39,27 +39,23 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
                         <Grid>
-                            <!-- 3-column layout -->
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="30"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Background -->
                             <Border Grid.ColumnSpan="3"
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"/>
 
-                            <!-- Selected item -->
                             <ContentPresenter Grid.Column="0"
                                               Margin="6,0,6,0"
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Left"
                                               Content="{TemplateBinding SelectionBoxItem}" />
 
-                            <!-- Dropdown arrow -->
                             <ToggleButton Grid.Column="2"
                                           Name="ToggleButton"
                                           Background="{TemplateBinding Background}"
@@ -74,7 +70,6 @@
                                       VerticalAlignment="Center"/>
                             </ToggleButton>
 
-                            <!-- Popup (dropdown) -->
                             <Popup Name="Popup"
                                    Placement="Bottom"
                                    IsOpen="{TemplateBinding IsDropDownOpen}"
@@ -84,22 +79,18 @@
                                 <Border Background="#FF2A2A2A"
                                         BorderBrush="#FF3F3F3F"
                                         BorderThickness="1">
-
                                     <ScrollViewer>
                                         <StackPanel IsItemsHost="True"
                                                     HorizontalAlignment="Center"/>
                                     </ScrollViewer>
-
                                 </Border>
                             </Popup>
-
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <!-- BUTTON STYLE -->
         <Style TargetType="Button">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="#FF3A3A3A"/>
@@ -128,7 +119,6 @@
             </Style.Triggers>
         </Style>
 
-        <!-- TEXTBLOCK STYLE -->
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="14"/>
@@ -141,63 +131,66 @@
                 Background="#FF1E1E1E"
                 BorderThickness="0">
 
-
+        <!-- ===================== BUILD TAB ===================== -->
         <TabItem Header="Build">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <Grid Margin="20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="38*"/>
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <!-- Title -->
                         <RowDefinition Height="Auto"/>
+                        <!-- Unity Version -->
                         <RowDefinition Height="Auto"/>
+                        <!-- Project Path -->
                         <RowDefinition Height="Auto"/>
+                        <!-- Output Path -->
                         <RowDefinition Height="Auto"/>
+                        <!-- Build Name -->
                         <RowDefinition Height="Auto"/>
+                        <!-- Version -->
                         <RowDefinition Height="Auto"/>
+                        <!-- Build Type -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Pre-build -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Button/Progress -->
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Unity Build Tool"
                                FontSize="22"
-                               FontWeight="Bold" Grid.ColumnSpan="2" VerticalAlignment="Top"/>
+                               FontWeight="Bold"
+                               Grid.Row="0"
+                               Margin="0,0,0,16"/>
 
-                    <!-- Unity Version -->
-                    <StackPanel Orientation="Horizontal" Margin="0,40,0,10" Grid.Row="1" Grid.ColumnSpan="2">
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Text="Unity Version:" Width="140"/>
                         <ComboBox x:Name="UnityVersionCombo" Width="250"/>
                     </StackPanel>
 
-                    <!-- Project Path -->
-                    <StackPanel Orientation="Horizontal" Margin="0,80,0,10" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Text="Project Path:" Width="140"/>
-                        <TextBox x:Name="ProjectPathBox" Width="300"/>
+                        <TextBox x:Name="ProjectPathBox" Width="360"/>
                         <Button Content="Browse..." Width="90" Click="BrowseProject_Click"/>
                     </StackPanel>
 
-                    <!-- Output Path -->
-                    <StackPanel Orientation="Horizontal" Margin="0,45,0,10" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Text="Build Output:" Width="140"/>
-                        <TextBox x:Name="BuildOutputBox" Width="300"/>
+                        <TextBox x:Name="BuildOutputBox" Width="360"/>
                         <Button Content="Browse..." Width="90" Click="BrowseOutput_Click"/>
                     </StackPanel>
 
-                    <!-- Build Name -->
-                    <StackPanel Orientation="Horizontal" Margin="0,45,0,10" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                    <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Text="Build File Name:" Width="140"/>
-                        <TextBox x:Name="BuildNameBox" Width="300"/>
+                        <TextBox x:Name="BuildNameBox" Width="360"/>
                     </StackPanel>
 
-                    <!-- Version -->
-                    <StackPanel Orientation="Horizontal" Margin="0,40,0,10" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                    <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Text="Version:" Width="140"/>
-                        <TextBox x:Name="VersionBox" Width="300"/>
+                        <TextBox x:Name="VersionBox" Width="360"/>
                     </StackPanel>
 
-                    <!-- Build Type -->
-                    <StackPanel Orientation="Horizontal" Margin="0,40,0,10" Grid.Row="5" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                    <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Text="Build Type:" Width="140"/>
                         <ComboBox x:Name="BuildTypeCombo" Width="250">
                             <ComboBoxItem Content="release" IsSelected="True"/>
@@ -205,17 +198,37 @@
                         </ComboBox>
                     </StackPanel>
 
-                    <!-- Build Button + Progress -->
-                    <Grid Grid.Row="7" Margin="0,20,0,0" Grid.ColumnSpan="2">
-                        <Button x:Name="BuildButton"
+                    <GroupBox Grid.Row="7"
+                              Header="Pre-build actions"
+                              Margin="0,6,0,0"
+                              BorderBrush="#FF3F3F3F"
+                              Foreground="White">
+                        <StackPanel Margin="10">
+                            <CheckBox x:Name="DeleteSavesCheck"
+                                      Content="Delete local save data (persistentDataPath + PlayerPrefs)"
+                                      Margin="0,0,0,8"/>
+                            <CheckBox x:Name="ResetScriptablesCheck"
+                                      Content="Reset ScriptableObjects (from reset list asset)"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <Grid Grid.Row="8" Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0"
+                                x:Name="BuildButton"
                                 Content="Build Game"
                                 Width="150"
-                                HorizontalAlignment="Left"
                                 Click="Build_Click"/>
 
-                        <ProgressBar x:Name="BuildProgressBar"
-                                     Height="25" Width="300"
-                                     HorizontalAlignment="Right"
+                        <ProgressBar Grid.Column="2"
+                                     x:Name="BuildProgressBar"
+                                     Height="25"
+                                     Width="300"
                                      Visibility="Collapsed"
                                      IsIndeterminate="True"/>
                     </Grid>
@@ -224,6 +237,7 @@
             </ScrollViewer>
         </TabItem>
 
+        <!-- ===================== ICON GENERATOR TAB ===================== -->
         <TabItem Header="Icon Generator">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <Grid Margin="20">
@@ -240,21 +254,18 @@
                                FontWeight="Bold"
                                Margin="0,0,0,20"/>
 
-                    <!-- Source Image -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="1">
                         <TextBlock Text="Source Image:" Width="150"/>
                         <TextBox x:Name="IconSourcePath" Width="300"/>
                         <Button Content="Browse..." Width="90" Click="BrowseIconSource_Click"/>
                     </StackPanel>
 
-                    <!-- Output Folder -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="2">
                         <TextBlock Text="Output Folder:" Width="150"/>
                         <TextBox x:Name="IconOutputPath" Width="300"/>
                         <Button Content="Browse..." Width="90" Click="BrowseIconOutput_Click"/>
                     </StackPanel>
 
-                    <!-- Platforms -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,20" Grid.Row="3">
                         <TextBlock Text="Generate For:" Width="150"/>
                         <CheckBox x:Name="GenWindows" Content="Windows (.ico)" IsChecked="True" Margin="0,0,20,0"/>
@@ -263,21 +274,17 @@
                     </StackPanel>
 
                     <StackPanel Grid.Row="4" Orientation="Vertical">
-
-                        <!-- Generate Icons Button -->
                         <Button Content="Generate Icons"
-                            Width="200" Height="40"
-                            Click="GenerateIcons_Click"/>
+                                Width="200" Height="40"
+                                Click="GenerateIcons_Click"/>
 
-                        <!--Add to unity -->
                         <Button Content="Apply Icons to Unity"
-                    Width="220" Height="40" Margin="0,10,0,0"
-                    Click="ApplyIconsToUnity_Click"/>
+                                Width="220" Height="40" Margin="0,10,0,0"
+                                Click="ApplyIconsToUnity_Click"/>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>
         </TabItem>
 
     </TabControl>
-
 </Window>
