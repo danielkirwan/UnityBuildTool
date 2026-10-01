@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("UnityBuild")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+59f4fc4427d749eecfb5e319e5e8d688655f3348")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+eb631a51dccf74dabab7dccda854deccbab2f2c1")]
 [assembly: System.Reflection.AssemblyProductAttribute("UnityBuild")]
 [assembly: System.Reflection.AssemblyTitleAttribute("UnityBuild")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
